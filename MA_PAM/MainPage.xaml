@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MA_PAM.MainPage"
+             BackgroundColor="#caf0f8">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,50"
+            Spacing="25"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Label 
+                Text="Bem-vindo ao Catálogo!"
+                FontSize="28"
+                FontAttributes="Italic,Bold"
+                TextColor="#023e8a"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20" />
+
+            <Button
+                Text="Catálogo"
+                x:Name="BtnCatalogo"
+                Clicked="BtnCatalogo_Clicked"
+                BackgroundColor="#0077b6"
+                TextColor="White"
+                BorderColor="#00b4d8"
+                BorderWidth="2"
+                CornerRadius="10"
+                FontSize="18"
+                Padding="15,10"
+                WidthRequest="200"
+                HeightRequest="50"
+                HorizontalOptions="Center">
+                <Button.Shadow>
+                    <Shadow Brush="#00000050" Offset="5,5" Radius="10"/>
+                </Button.Shadow>
+            </Button>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

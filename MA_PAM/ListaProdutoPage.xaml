@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MA_PAM"
+             x:Class="MA_PAM.ListaProdutoPage"
+             Title="Catálogo de Produtos"
+             BackgroundColor="#caf0f8">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+
+            <!-- Título -->
+            <Label Text="Lista de Produtos" 
+                   FontSize="26" 
+                   FontAttributes="Bold" 
+                   TextColor="#023e8a"
+                   HorizontalOptions="Center" 
+                   Margin="0,10,0,20" />
+
+            <!-- ListView de Produtos -->
+            <ListView x:Name="lstProduto" 
+                      BackgroundColor="Transparent" 
+                      SeparatorVisibility="None"
+                      ItemsSource="{Binding Produtos}"
+                      HeightRequest="500">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Produto">
+                        <ViewCell Tapped="ViewCell_Tapped">
+                            <Frame CornerRadius="12" 
+                                   Padding="15" 
+                                   Margin="5" 
+                                   BackgroundColor="White" 
+                                   HasShadow="True"
+                                   BorderColor="#0096c7">
+                                <Grid ColumnSpacing="10">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Text="{Binding nome}" 
+                                           Grid.Row="0" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#03045e" />
+
+                                  
+                                    <Label Text="{Binding categoria}" 
+                                           Grid.Row="1" 
+                                           FontSize="16" 
+                                           TextColor="#0077b6" 
+                                           FontAttributes="Bold" />
+
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
