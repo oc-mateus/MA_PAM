@@ -40,6 +40,20 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
+                                    <Picker x:Name="filtroCategoriaPicker"
+                                            Title="Filtrar por Categoria"
+                                            SelectedIndexChanged="FiltrarPorCategoria">
+                                        <Picker.ItemsSource>
+                                            <x:Array Type="{x:Type x:String}">
+                                                <x:String>Todos</x:String>
+                                                <x:String>Acessórios</x:String>
+                                                <x:String>Calçados</x:String>
+                                                <x:String>Vestuário</x:String>
+                                            </x:Array>
+                                        </Picker.ItemsSource>
+                                    </Picker>
+                                            
+
                                     <Label Text="{Binding nome}" 
                                            Grid.Row="0" 
                                            FontSize="20" 
