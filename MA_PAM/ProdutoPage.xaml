@@ -1,136 +1,87 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MA_PAM"
              x:Class="MA_PAM.ProdutoPage"
-             BindingContext="{x:Reference Produto}"
              Title="Detalhes do Produto"
              BackgroundColor="#caf0f8">
-    <ScrollView>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ValidadeVencidaConverter x:Key="validadeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25">
 
+            <Label Text="Detalhes do Produto"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="#023e8a"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,20" />
 
-        <Label Text="Detalhes do Produto"
-               FontSize="26"
-               FontAttributes="Bold"
-               TextColor="#023e8a"
-               HorizontalOptions="Center"
-               Margin="0,10,0,20" />
+            <!-- Nome -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Nome:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding nome}" FontSize="20" FontAttributes="Bold" TextColor="#0077b6" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
+            <!-- Preço -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Preço:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding preco, StringFormat='R$ {0:F2}'}" FontSize="20" FontAttributes="Bold" TextColor="#028090" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Nome:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
+            <!-- Categoria -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Categoria:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding categoria}" FontSize="20" FontAttributes="Bold" TextColor="#0077b6" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
-                <Label Text="{Binding nome}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#0077b6"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
+            <!-- Estoque -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Estoque:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding estoque}" FontSize="20" FontAttributes="Bold" TextColor="#D72638" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
+            <!-- Desconto -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Desconto:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding desconto, StringFormat='{0}%'}" FontSize="20" FontAttributes="Bold" TextColor="#D72638" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Preço:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
+            <!-- Marca -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Marca:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding marca}" FontSize="20" FontAttributes="Bold" TextColor="#D72638" HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
-                <Label Text="{Binding preco, StringFormat='R$ {0:F2}'}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#028090"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
+            <!-- Validade -->
+            <Border BackgroundColor="White" Padding="15" StrokeThickness="2" Stroke="#0077b6" Shadow="5,5,10,#00000050">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Validade:" FontSize="16" TextColor="#03045e" VerticalOptions="Center" />
+                    <Label Text="{Binding ValidadeFormatada}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{Binding Validade, Converter={StaticResource validadeConverter}}"
+                           HorizontalOptions="EndAndExpand" />
+                </HorizontalStackLayout>
+            </Border>
 
-
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Categoria:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
-
-                <Label Text="{Binding categoria}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#0077b6"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Estoque:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
-
-                <Label Text="{Binding estoque}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#D72638"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Desconto:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
-
-                <Label Text="{Binding desconto, StringFormat='% {0:F1}'}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#D72638"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
-        <Border BackgroundColor="White"
-                Padding="15"
-                StrokeThickness="2"
-                Stroke="#0077b6"
-                Shadow="5,5,10,#00000050">
-            <HorizontalStackLayout Spacing="10">
-                <Label Text="Marca:" 
-                       FontSize="16"
-                       TextColor="#03045e"
-                       VerticalOptions="Center" />
-
-                <Label Text="{Binding marca}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="#D72638"
-                       HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-        </Border>
-
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
