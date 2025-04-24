@@ -75,6 +75,8 @@
                                            FontSize="14"
                                            TextColor="{Binding Validade, Converter={StaticResource validadeConverter}}" />
 
+                                    
+
                                 </VerticalStackLayout>
                             </Frame>
                         </ViewCell>
