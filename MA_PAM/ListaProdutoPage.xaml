@@ -31,10 +31,7 @@
                     Margin="0,0,0,10"
                     TextColor="#03045e"
                     BackgroundColor="White">
-                <Picker.ItemsSource
-                    TextColor="#03045e"
-                    BackgroundColor="Transparent"
-                    >
+                <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>Todas</x:String>
                         <x:String>Acessórios</x:String>
@@ -44,12 +41,19 @@
                 </Picker.ItemsSource>
             </Picker>
 
+            <!-- Label de Alerta (PDF: item 5) -->
+            <Label x:Name="alertaLabel"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   Margin="10" />
+
             <!-- ListView de Produtos -->
             <ListView x:Name="lstProduto" 
                       BackgroundColor="Transparent" 
                       SeparatorVisibility="None"
                       HasUnevenRows="True"
-                      HeightRequest="500">
+                      HeightRequest="500"
+                      ItemTapped="lstProduto_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Produto">
                         <ViewCell Tapped="ViewCell_Tapped">
@@ -59,7 +63,7 @@
                                    BackgroundColor="White" 
                                    HasShadow="True"
                                    BorderColor="#0096c7">
-                                <VerticalStackLayout Spacing="4">
+                                <VerticalStackLayout Spacing="5">
 
                                     <Label Text="{Binding nome}" 
                                            FontSize="20" 
@@ -71,11 +75,25 @@
                                            TextColor="#0077b6" 
                                            FontAttributes="Bold" />
 
+                                    <Label Text="Marca: {Binding marca}" 
+                                           FontSize="14"
+                                           TextColor="Black" />
+
+                                    <Label Text="Preço: R$ {Binding preco:F2}" 
+                                           FontSize="14"
+                                           TextColor="Black" />
+
+                                    <Label Text="Desconto: {Binding desconto}%" 
+                                           FontSize="14"
+                                           TextColor="Black" />
+
+                                    <Label Text="Estoque: {Binding estoque}" 
+                                           FontSize="14"
+                                           TextColor="Black" />
+
                                     <Label Text="{Binding ValidadeFormatada}"
                                            FontSize="14"
                                            TextColor="{Binding Validade, Converter={StaticResource validadeConverter}}" />
-
-                                    
 
                                 </VerticalStackLayout>
                             </Frame>
@@ -83,6 +101,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <!-- Resumo final (PDF: item 3) -->
+            <Label x:Name="resumoLabel" 
+                   FontSize="16" 
+                   FontAttributes="Bold" 
+                   Margin="10,10" 
+                   TextColor="#03045e" />
 
         </VerticalStackLayout>
     </ScrollView>
