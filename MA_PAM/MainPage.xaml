@@ -89,23 +89,19 @@
                         BackgroundColor="#ffffff"
                         Margin="0,0,0,10" />
 
-            <!-- Botão para Selecionar Imagem -->
             <Button Text="Selecionar Imagem"
-                    Clicked="SelecionarImagem_Clicked"
-                    BackgroundColor="#90e0ef"
-                    TextColor="#03045e"
-                    FontAttributes="Bold"
-                    FontSize="16"
-                    HeightRequest="45"
-                    />
+        Clicked="SelecionarImagem_Clicked"
+        BackgroundColor="#90e0ef"
+        TextColor="#03045e"
+        FontAttributes="Bold"
+        FontSize="16"
+        HeightRequest="45" />
 
-            <!-- Preview da imagem selecionada -->
             <Image x:Name="previewImagem"
-                   HeightRequest="100"
-                   WidthRequest="100"
-                   Margin="0,10,0,10"
-                   BackgroundColor="White"
-                   HorizontalOptions="Center" />
+       HeightRequest="100"
+       WidthRequest="100"
+       Margin="0,10,0,10" />
+
 
             <!-- Botão Adicionar Produto -->
             <Button

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 
 namespace MA_PAM
@@ -17,11 +16,10 @@ namespace MA_PAM
         {
             base.OnAppearing();
 
-            // Ordena e exibe os produtos
-            var produtos = Produto.Produtos.OrderBy(p => p.Validade).ToList();
+            var produtos = MainPage.Produtos.OrderBy(p => p.Validade).ToList();
             lstProduto.ItemsSource = produtos;
 
-            // Alerta de vencidos ou prestes a vencer (PDF - item 5)
+            // Alerta de vencidos ou prestes a vencer
             var hoje = DateTime.Today;
             var vencidos = produtos.Where(p => p.Validade.HasValue && p.Validade.Value < hoje).ToList();
             var proximos = produtos.Where(p => p.Validade.HasValue && p.Validade.Value <= hoje.AddDays(3) && p.Validade.Value >= hoje).ToList();
@@ -40,21 +38,29 @@ namespace MA_PAM
 
         private void AtualizarResumo()
         {
-            var produtos = lstProduto.ItemsSource as List<Produto>;
+            var produtos = lstProduto.ItemsSource?.Cast<Produto>().ToList();
             int quantidade = produtos?.Count ?? 0;
-            double total = produtos?.Sum(p => p.preco) ?? 0;
+            double total = produtos?.Sum(p => p.Preco) ?? 0;
 
             resumoLabel.Text = $"Total: {quantidade} produto(s) - Valor: R$ {total:F2}";
         }
 
-        private void ViewCell_Tapped(object sender, EventArgs e)
+        private async void ViewCell_Tapped(object sender, ItemTappedEventArgs e)
         {
-            var viewCell = sender as ViewCell;
-            if (viewCell?.BindingContext is Produto produto)
+            // Verifica se um item foi selecionado
+            if (e.Item != null)
             {
-                Navigation.PushAsync(new ProdutoPage { BindingContext = produto });
+                // Recupera o produto clicado
+                var produtoSelecionado = e.Item as Produto;  // Ajuste "Produto" conforme o tipo do seu modelo
+
+                // Navega até a ProdutoPage e passa o produto selecionado
+                await Navigation.PushAsync(new ProdutoPage { BindingContext = produtoSelecionado });
+
+                // Desmarca o item após a navegação
+                ((ListView)sender).SelectedItem = null;
             }
         }
+
 
         private void FiltrarPorCategoria(object sender, EventArgs e)
         {
@@ -64,12 +70,12 @@ namespace MA_PAM
 
             if (categoriaSelecionada == "Todas")
             {
-                produtosFiltrados = Produto.Produtos;
+                produtosFiltrados = MainPage.Produtos;
             }
             else
             {
-                produtosFiltrados = Produto.Produtos
-                    .Where(p => p.categoria == categoriaSelecionada);
+                produtosFiltrados = MainPage.Produtos
+                    .Where(p => p.Categoria == categoriaSelecionada);
             }
 
             lstProduto.ItemsSource = produtosFiltrados
@@ -79,20 +85,6 @@ namespace MA_PAM
             AtualizarResumo();
         }
 
-        private async void lstProduto_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            if (e.Item is Produto produto)
-            {
-                bool confirmar = await DisplayAlert("Remover Produto",
-                    $"Deseja remover o produto \"{produto.nome}\"?", "Sim", "Não");
-
-                if (confirmar)
-                {
-                    Produto.Produtos.Remove(produto);
-                    lstProduto.ItemsSource = Produto.Produtos.OrderBy(p => p.Validade).ToList();
-                    AtualizarResumo();
-                }
-            }
-        }
+       
     }
 }
