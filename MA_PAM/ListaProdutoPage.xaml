@@ -1,90 +1,82 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MA_PAM"
              x:Class="MA_PAM.ListaProdutoPage"
-             Title="Catálogo de Produtos"
-             BackgroundColor="#caf0f8">
+             BackgroundColor="#f1f7fa"
+             Title="Produtos">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:ValidadeVencidaConverter x:Key="validadeConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    <StackLayout Padding="20" Spacing="20">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
+        <!-- Picker para filtrar categorias -->
+        <Picker x:Name="filtroCategoriaPicker"
+                Title="Filtrar por Categoria"
+                SelectedIndexChanged="FiltrarPorCategoria"
+                BackgroundColor="White"
+                TextColor="#333"
+                Margin="0,0,0,10">
+            <Picker.Items>
+                <x:String>Todas</x:String>
+                <x:String>Acessórios</x:String>
+                <x:String>Calçados</x:String>
+                <x:String>Vestuário</x:String>
+            </Picker.Items>
+        </Picker>
 
-            <!-- Título -->
-            <Label Text="Lista de Produtos" 
-                   FontSize="26" 
-                   FontAttributes="Bold" 
-                   TextColor="#023e8a"
-                   HorizontalOptions="Center" 
-                   Margin="0,10,0,10" />
-
-            <!-- Picker de Categoria -->
-            <Picker x:Name="filtroCategoriaPicker"
-                    Title="Filtrar por Categoria"
-                    TitleColor="#03045e"
-                    SelectedIndexChanged="FiltrarPorCategoria"
-                    Margin="0,0,0,10"
-                    TextColor="#03045e"
-                    BackgroundColor="White">
-                <Picker.ItemsSource
-                    TextColor="#03045e"
-                    BackgroundColor="Transparent"
-                    >
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Todas</x:String>
-                        <x:String>Acessórios</x:String>
-                        <x:String>Calçados</x:String>
-                        <x:String>Vestuário</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-
-            <!-- ListView de Produtos -->
-            <ListView x:Name="lstProduto" 
-                      BackgroundColor="Transparent" 
-                      SeparatorVisibility="None"
-                      HasUnevenRows="True"
-                      HeightRequest="500">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Produto">
-                        <ViewCell Tapped="ViewCell_Tapped">
-                            <Frame CornerRadius="12" 
-                                   Padding="15" 
-                                   Margin="5" 
-                                   BackgroundColor="White" 
-                                   HasShadow="True"
-                                   BorderColor="#0096c7">
-                                <VerticalStackLayout Spacing="4">
-
-                                    <Label Text="{Binding nome}" 
-                                           FontSize="20" 
-                                           FontAttributes="Bold" 
-                                           TextColor="#03045e" />
-
-                                    <Label Text="{Binding categoria}" 
-                                           FontSize="16" 
-                                           TextColor="#0077b6" 
-                                           FontAttributes="Bold" />
-
-                                    <Label Text="{Binding ValidadeFormatada}"
+        <!-- Lista de Produtos -->
+        <ListView x:Name="lstProduto"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  ItemTapped="ViewCell_Tapped"
+                  BackgroundColor="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame 
+                               Padding="10"
+                               Margin="0,0,0,10"
+                               BackgroundColor="White"
+                               HasShadow="True">
+                            <StackLayout Orientation="Horizontal" Spacing="12">
+                                <Image Source="{Binding CaminhoImagem}"
+                                       WidthRequest="80"
+                                       HeightRequest="80"
+                                       VerticalOptions="Center"
+                                       Aspect="AspectFill"
+                                       BackgroundColor="#e0e0e0"/>
+                                <StackLayout VerticalOptions="Center" Spacing="4">
+                                    <Label Text="{Binding Nome}"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           TextColor="#023e8a" />
+                                    <Label Text="{Binding PrecoFormatado}"
                                            FontSize="14"
-                                           TextColor="{Binding Validade, Converter={StaticResource validadeConverter}}" />
+                                           TextColor="#0077b6" />
+                                    <Label Text="{Binding ValidadeFormatada}"
+                                           FontSize="12"
+                                           TextColor="Gray" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-                                    
+        <!-- Resumo total -->
+        <Label x:Name="resumoLabel"
+               FontSize="16"
+               FontAttributes="Bold"
+               TextColor="#03045e"
+               HorizontalOptions="Center"
+               Margin="0,10,0,0" />
 
-                                </VerticalStackLayout>
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <!-- Alerta de validade vencida -->
+        <Label x:Name="alertaLabel"
+               TextColor="Red"
+               FontAttributes="Bold"
+               FontSize="14"
+               HorizontalOptions="Center"
+               Margin="0,5,0,10" />
+    </StackLayout>
 
 </ContentPage>

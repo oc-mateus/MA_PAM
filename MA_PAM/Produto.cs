@@ -1,41 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using MA_PAM;
 
 namespace MA_PAM
 {
-    internal class Produto
+    public class Produto
     {
-        public string nome { get; set; }
-        public double preco { get; set; }
-        public string categoria { get; set; }
-        public int estoque { get; set; }
-        public double desconto { get; set; }
-        public string marca { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
+        public string Marca { get; set; } = string.Empty;
+
+        public double Preco { get; set; }
+        public double Desconto { get; set; }
+        public int Estoque { get; set; }
 
         public DateTime? Validade { get; set; }
 
-        public string ValidadeFormatada => Validade.HasValue
-            ? Validade.Value.ToString("dd/MM/yyyy")
-            : "Sem validade";
+        public string? CaminhoImagem { get; set; }
 
-        // Lista estática de produtos
+        [JsonIgnore]
+        public string ValidadeFormatada => Validade?.ToString("dd/MM/yyyy") ?? "Sem validade";
+
+        [JsonIgnore]
+        public string PrecoFormatado => $"R$ {Preco:F2}";
+
         public static List<Produto> Produtos = new List<Produto>
         {
-            new Produto() { nome = "Camiseta Polo", preco = 80, categoria = "Vestuário", estoque = 200, marca = "Lacoste", desconto = 10, Validade = DateTime.Now.AddDays(30) },
-            new Produto() { nome = "Calça Jeans", preco = 150, categoria = "Vestuário", estoque = 100, marca = "Levi's", desconto = 5, Validade = DateTime.Now.AddDays(-5) }, // vencido
-            new Produto() { nome = "Tênis Esportivo", preco = 300, categoria = "Calçados", estoque = 50, marca = "Nike", desconto = 20, Validade = DateTime.Now.AddMonths(2) },
-            new Produto() { nome = "Jaqueta de Couro", preco = 500, categoria = "Vestuário", estoque = 30, marca = "Calvin Klein", desconto = 15, Validade = DateTime.Now.AddDays(15) },
-            new Produto() { nome = "Sapato Social", preco = 400, categoria = "Calçados", estoque = 40, marca = "Ferracini", desconto = 10 },
-            new Produto() { nome = "Meia Algodão", preco = 20, categoria = "Vestuário", estoque = 500, marca = "Lupo", desconto = 5 },
-            new Produto() { nome = "Boné Esportivo", preco = 60, categoria = "Acessórios", estoque = 150, marca = "Adidas", desconto = 10, Validade = DateTime.Now.AddDays(-1) }, // vencido
-            new Produto() { nome = "Relógio Analógico", preco = 350, categoria = "Acessórios", estoque = 80, marca = "Casio", desconto = 8 },
-            new Produto() { nome = "Mochila Executiva", preco = 250, categoria = "Acessórios", estoque = 60, marca = "Samsonite", desconto = 12 },
-            new Produto() { nome = "Óculos de Sol", preco = 220, categoria = "Acessórios", estoque = 90, marca = "Ray-Ban", desconto = 10, Validade = DateTime.Now.AddDays(10) },
-            new Produto() { nome = "Luvas de Couro", preco = 180, categoria = "Vestuário", estoque = 40, marca = "Calvin Klein", desconto = 10 },
-            new Produto() { nome = "Bermuda Jeans", preco = 120, categoria = "Vestuário", estoque = 120, marca = "Diesel", desconto = 7, Validade = DateTime.Now.AddDays(60) },
-            new Produto() { nome = "Carteira de Couro", preco = 130, categoria = "Acessórios", estoque = 200, marca = "Montblanc", desconto = 5 },
-            new Produto() { nome = "Cinto de Couro", preco = 90, categoria = "Acessórios", estoque = 170, marca = "Hugo Boss", desconto = 8 },
-            new Produto() { nome = "Jaqueta Esportiva", preco = 280, categoria = "Vestuário", estoque = 70, marca = "Nike", desconto = 12, Validade = DateTime.Now.AddDays(-10) } // vencido
+            new Produto() { Nome = "Camiseta Polo", Preco = 80, Categoria = "Vestuário", Estoque = 200, Marca = "Lacoste", Desconto = 10, Validade = DateTime.Now.AddDays(30) },
+            new Produto() { Nome = "Calça Jeans", Preco = 150, Categoria = "Vestuário", Estoque = 100, Marca = "Levi's", Desconto = 5, Validade = DateTime.Now.AddDays(-5) },
+            new Produto() { Nome = "Tênis Esportivo", Preco = 300, Categoria = "Calçados", Estoque = 50, Marca = "Nike", Desconto = 20, Validade = DateTime.Now.AddMonths(2) },
+            new Produto() { Nome = "Jaqueta de Couro", Preco = 500, Categoria = "Vestuário", Estoque = 30, Marca = "Calvin Klein", Desconto = 15, Validade = DateTime.Now.AddDays(15) },
+            new Produto() { Nome = "Sapato Social", Preco = 400, Categoria = "Calçados", Estoque = 40, Marca = "Ferracini", Desconto = 10 },
+            new Produto() { Nome = "Meia Algodão", Preco = 20, Categoria = "Vestuário", Estoque = 500, Marca = "Lupo", Desconto = 5 },
+            new Produto() { Nome = "Boné Esportivo", Preco = 60, Categoria = "Acessórios", Estoque = 150, Marca = "Adidas", Desconto = 10, Validade = DateTime.Now.AddDays(-1) },
+            new Produto() { Nome = "Relógio Analógico", Preco = 350, Categoria = "Acessórios", Estoque = 80, Marca = "Casio", Desconto = 8 },
+            new Produto() { Nome = "Mochila Executiva", Preco = 250, Categoria = "Acessórios", Estoque = 60, Marca = "Samsonite", Desconto = 12 },
+            new Produto() { Nome = "Óculos de Sol", Preco = 220, Categoria = "Acessórios", Estoque = 90, Marca = "Ray-Ban", Desconto = 10, Validade = DateTime.Now.AddDays(10) },
+            new Produto() { Nome = "Luvas de Couro", Preco = 180, Categoria = "Vestuário", Estoque = 40, Marca = "Calvin Klein", Desconto = 10 },
+            new Produto() { Nome = "Bermuda Jeans", Preco = 120, Categoria = "Vestuário", Estoque = 120, Marca = "Diesel", Desconto = 7, Validade = DateTime.Now.AddDays(60) },
+            new Produto() { Nome = "Carteira de Couro", Preco = 130, Categoria = "Acessórios", Estoque = 200, Marca = "Montblanc", Desconto = 5 },
+            new Produto() { Nome = "Cinto de Couro", Preco = 90, Categoria = "Acessórios", Estoque = 170, Marca = "Hugo Boss", Desconto = 8 },
+            new Produto() { Nome = "Jaqueta Esportiva", Preco = 280, Categoria = "Vestuário", Estoque = 70, Marca = "Nike", Desconto = 12, Validade = DateTime.Now.AddDays(-10) }
         };
     }
 }

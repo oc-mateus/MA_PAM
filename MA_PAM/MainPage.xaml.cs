@@ -1,70 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Storage;
+using System.Collections.Generic;
+using System.Linq;
+using MA_PAM;
+using System.Text.Json;
 
 namespace MA_PAM
 {
     public partial class MainPage : ContentPage
     {
-        // Lista global de produtos
-        private List<Produto> produtos = Produto.Produtos;
+        public static List<Produto> Produtos { get; set; } = ProdutoStorage.CarregarProdutos();
+
+        private string caminhoImagemSelecionada;
 
         public MainPage()
         {
             InitializeComponent();
         }
 
-        // Método para navegar até o catálogo de produtos
-        private void BtnCatalogo_Clicked(object sender, EventArgs e)
+        private async void BtnCatalogo_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ListaProdutoPage());
+            await Navigation.PushAsync(new ListaProdutoPage());
         }
 
-        // Método para adicionar um produto ao catálogo
-        private void btnAdicionarProduto_Clicked(object sender, EventArgs e)
+        private async void btnAdicionarProduto_Clicked(object sender, EventArgs e)
         {
-            // Obtenha os dados do formulário
-            string nome = txtNome.Text;
-            double preco = double.TryParse(txtPreco.Text, out var p) ? p : 0;
-            string categoria = pickerCategoria.SelectedItem?.ToString();
-            int estoque = int.TryParse(txtEstoque.Text, out var E) ? E : 0;
-            double desconto = double.TryParse(txtDesconto.Text, out var d) ? d : 0;
-            string marca = txtMarca.Text;
-            DateTime? validade = dateValidade.Date;
-
-            // Validação básica
-            if (string.IsNullOrWhiteSpace(nome) || preco <= 0 || estoque <= 0 || string.IsNullOrWhiteSpace(categoria) || string.IsNullOrWhiteSpace(marca))
+            try
             {
-                DisplayAlert("Erro", "Por favor, preencha todos os campos corretamente.", "OK");
-                return;
+                var produto = new Produto
+                {
+                    Nome = txtNome.Text,
+                    Preco = double.TryParse(txtPreco.Text, out double preco) ? preco : 0,
+                    Categoria = pickerCategoria.SelectedItem?.ToString() ?? "",
+                    Estoque = int.TryParse(txtEstoque.Text, out int estoque) ? estoque : 0,
+                    Desconto = double.TryParse(txtDesconto.Text, out double desconto) ? desconto : 0,
+                    Marca = txtMarca.Text,
+                    Validade = dateValidade.Date,
+                    CaminhoImagem = caminhoImagemSelecionada
+                };
+
+                Produtos.Add(produto);
+                ProdutoStorage.SalvarProdutos(Produtos);
+
+                await DisplayAlert("Sucesso", "Produto adicionado!", "OK");
+                LimparCampos();
             }
-
-            // Criar um novo produto com os dados do formulário
-            Produto novoProduto = new Produto
+            catch (Exception ex)
             {
-                nome = nome,
-                preco = preco,
-                categoria = categoria,
-                estoque = estoque,
-                marca = marca,
-                desconto = desconto,
-                Validade = validade
-            };
+                await DisplayAlert("Erro", $"Ocorreu um erro: {ex.Message}", "OK");
+            }
+        }
 
-            // Adiciona o novo produto à lista
-            produtos.Add(novoProduto);
+        private async void SelecionarImagem_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var resultado = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Selecione uma imagem",
+                    FileTypes = FilePickerFileType.Images
+                });
 
-            // Atualizar a lista de produtos no catálogo
-            DisplayAlert("Produto Adicionado", "O produto foi adicionado com sucesso!", "OK");
+                if (resultado != null)
+                {
+#if WINDOWS
+            caminhoImagemSelecionada = resultado.FullPath;
+#elif ANDROID || IOS
+                    // Em plataformas móveis, usar stream:
+                    using var stream = await resultado.OpenReadAsync();
+                    var memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                    var bytes = memoryStream.ToArray();
+                    caminhoImagemSelecionada = resultado.FileName;
 
-            // Limpar os campos do formulário
+                    // Salvar localmente se necessário
+                    var localPath = Path.Combine(FileSystem.AppDataDirectory, caminhoImagemSelecionada);
+                    File.WriteAllBytes(localPath, bytes);
+                    caminhoImagemSelecionada = localPath;
+#endif
+
+                    previewImagem.Source = ImageSource.FromFile(caminhoImagemSelecionada);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Erro ao selecionar imagem: {ex.Message}", "OK");
+            }
+        }
+
+        private void LimparCampos()
+        {
             txtNome.Text = string.Empty;
             txtPreco.Text = string.Empty;
+            pickerCategoria.SelectedIndex = -1;
             txtEstoque.Text = string.Empty;
             txtDesconto.Text = string.Empty;
             txtMarca.Text = string.Empty;
-            pickerCategoria.SelectedIndex = -1;
-            dateValidade.Date = DateTime.Now;
+            dateValidade.Date = DateTime.Today;
+            previewImagem.Source = null;
+            caminhoImagemSelecionada = null;
         }
     }
 }
